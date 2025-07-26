@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/home/digitql/Projects/Active/Thread-Scheduler/build",
+  "command": "/usr/bin/c++  -I/home/digitql/Projects/Active/Thread-Scheduler/include -std=gnu++17 -o CMakeFiles/Task_Scheduler.dir/src/main.cpp.o -c /home/digitql/Projects/Active/Thread-Scheduler/src/main.cpp",
+  "file": "/home/digitql/Projects/Active/Thread-Scheduler/src/main.cpp",
+  "output": "CMakeFiles/Task_Scheduler.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/digitql/Projects/Active/Thread-Scheduler/build",
+  "command": "/usr/bin/c++  -I/home/digitql/Projects/Active/Thread-Scheduler/include -std=gnu++17 -o CMakeFiles/Task_Scheduler.dir/src/task_manager.cpp.o -c /home/digitql/Projects/Active/Thread-Scheduler/src/task_manager.cpp",
+  "file": "/home/digitql/Projects/Active/Thread-Scheduler/src/task_manager.cpp",
+  "output": "CMakeFiles/Task_Scheduler.dir/src/task_manager.cpp.o"
+},
+{
+  "directory": "/home/digitql/Projects/Active/Thread-Scheduler/build",
+  "command": "/usr/bin/c++  -I/home/digitql/Projects/Active/Thread-Scheduler/include -std=gnu++17 -o CMakeFiles/Task_Scheduler.dir/src/thread_manager.cpp.o -c /home/digitql/Projects/Active/Thread-Scheduler/src/thread_manager.cpp",
+  "file": "/home/digitql/Projects/Active/Thread-Scheduler/src/thread_manager.cpp",
+  "output": "CMakeFiles/Task_Scheduler.dir/src/thread_manager.cpp.o"
+}
+]
