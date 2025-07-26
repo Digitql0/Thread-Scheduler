@@ -1,3 +1,0 @@
-/home/digitql/Projects/Active/Thread-Scheduler/build/CMakeFiles/Task_Scheduler.dir
-/home/digitql/Projects/Active/Thread-Scheduler/build/CMakeFiles/edit_cache.dir
-/home/digitql/Projects/Active/Thread-Scheduler/build/CMakeFiles/rebuild_cache.dir
