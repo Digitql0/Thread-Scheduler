@@ -6,8 +6,10 @@
 #include <vector>
 
 //Task Manager Class with abbreviation tsk
-class tsk {
-	tsk();
+class taskManager {
+public:
+	taskManager();
+	bool makeTask();
 	std::vector<std::thread> threads;
 };
 
