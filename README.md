@@ -24,10 +24,11 @@ mkdir build
 cd build
 cmake ..
 make
+```
 
-##Usage
+## Usage
 
-###Create tasks with optional dependencies and add them to the task manager:
+Create tasks with optional dependencies and add them to the task manager:
 
 task t = makeTask();
 t.task = yourFunction;
