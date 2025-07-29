@@ -30,12 +30,14 @@ make
 
 Create tasks with optional dependencies and add them to the task manager:
 
+```cpp
 task t = makeTask();
 t.task = yourFunction;
 t.dependencies = { /* task IDs */ };
 taskManager tsk;
 tsk.addTask(t);
 tsk.distributeTasks();
+```
 
 ## Roadmap
 
