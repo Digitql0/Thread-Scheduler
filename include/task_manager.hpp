@@ -12,6 +12,7 @@ public:
 	void addTask(task t);
 	void distributeTasks();
 	int findNextTask();
+	void makeHardwareThreads();
 
 	std::mutex mtx;
 	std::condition_variable cv;

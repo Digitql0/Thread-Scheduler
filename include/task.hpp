@@ -4,7 +4,10 @@
 #include <iostream>
 #include <mutex>
 #include <string>
+#include <thread>
 #include <vector>
+#include <sstream>
+
 
 typedef struct {
 	void (*task) (void* data);
@@ -28,10 +31,15 @@ inline task makeTask() {
 }
 
 inline void safePrint(const std::string& msg) {
-    static std::mutex printMutex;  // static so it's shared everywhere
+    static std::mutex printMutex;
     std::lock_guard<std::mutex> lock(printMutex);
-    std::cout << msg << std::endl;
-}
 
+    // Build the entire message inside the lock
+    std::ostringstream oss;
+    oss << "[Thread " << std::this_thread::get_id() << "] " << msg;
+
+    // Avoid std::endl because it flushes — do it manually
+    std::cout << oss.str() << '\n' << std::flush;
+}
 
 #endif

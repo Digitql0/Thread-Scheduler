@@ -1,21 +1,25 @@
+#include "task_manager.hpp"
+
 #include <algorithm>
 #include <memory>
-
-#include "task_manager.hpp"
 
 taskManager::taskManager() {
   std::string str = "Task Manager Initialized";
   safePrint(str);
 
+  makeHardwareThreads();
+}
+
+void taskManager::makeHardwareThreads() {
+  // Get Available Threads
   unsigned int threadCount = std::thread::hardware_concurrency();
-
-  str = std::to_string(threadCount) + " Threads Available.";
+  std::string str = std::to_string(threadCount) + " Threads Available.";
   safePrint(str);
-
   if (threadCount == 0) {
     threadCount = 4;  // fallback to 4 if undetectable
   }
 
+  // Emplace a worker for every available Thread
   for (int i = 0; i < threadCount; i++) {
     threads.emplace_back(std::unique_ptr<worker>(
         new worker(cv, mtx)));  // Custom Make_unique due to C++11
@@ -30,7 +34,7 @@ void taskManager::addTask(task t) {
 // Assign to each non-Busy Thread the task per FIFO algorithm, provided its
 // dependencies are done
 
-//TODO: Fix Endless Loop Bug
+//  FIXME: Fix Endless Loop Bug
 void taskManager::distributeTasks() {
   if (tasks.empty()) {
     return;
@@ -42,7 +46,17 @@ void taskManager::distributeTasks() {
   str = "Checked Threads " + std::to_string(taskManagerLoops++) + " times.";
   safePrint(str);
 
-  str = "Tasks: " + std::to_string(tasks.size());
+  str = "Tasks: " + std::to_string(tasks.size()) + " ";
+  safePrint(str);
+
+  str = "Left Tasks: \n";
+  for (auto& t : tasks) {
+    str += "[" + std::to_string(t.id) + "]: {";
+    for (auto& d : t.dependencies) {
+      str += std::to_string(d) + ", ";
+    }
+    str += "} \n";
+  }
   safePrint(str);
 
   std::vector<int> dependencyIDs;
@@ -65,26 +79,39 @@ void taskManager::distributeTasks() {
     }
   }
 
+  dependencyIDs.clear();
+
+  // Pick Next Task
   int task_index = findNextTask();
-  if (task_index == -1) return;
+  if (task_index == -1) {
+    return;
+  }
   task t = tasks.at(task_index);
-  tasks.erase(tasks.begin() + task_index);
 
   bool assigned = false;
 
   for (auto& w : threads) {
-    if (!w->isBusy()) {
-      w->assignJob(t);
+    if (!w->isBusy() || w->current_task.done) {
+      if (w->gotJob.load()) {
+        dependencyIDs.push_back(w->current_task.id);
+      }
+
+      if (w->assignJob(t)) {
+        tasks.erase(tasks.begin() + task_index);
+      }
+
       assigned = true;
 
       if (tasks.empty()) {
         break;
       }
 
+      // Pick next Task
       task_index = findNextTask();
-      if (task_index == -1) break;
+      if (task_index == -1) {
+        break;
+      }
       t = tasks.at(task_index);
-      tasks.erase(tasks.begin() + task_index);
     }
   }
 
@@ -97,6 +124,7 @@ void taskManager::distributeTasks() {
 int taskManager::findNextTask() {
   for (int i = 0; i < tasks.size(); i++) {
     std::lock_guard<std::mutex> lock(mtx);
+
     if (tasks.at(i).dependenciesDone == tasks.at(i).dependencies.size()) {
       return i;
     }

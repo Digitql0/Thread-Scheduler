@@ -12,7 +12,7 @@ public:
 	worker(std::condition_variable& c, std::mutex& m);
 	~worker();
 	void idle();
-	void assignJob(const task& tsk);
+	bool assignJob(const task& tsk);
 	bool isBusy();
 
 	std::thread t;
