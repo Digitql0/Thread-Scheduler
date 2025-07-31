@@ -16,5 +16,9 @@ add_library(Thread_Scheduler STATIC ${SOURCES})
 # Build as an Executable
 add_executable(Thread_SchedulerApp ${SOURCES})
 
+# Include header for Thread_SchedulerApp
+target_include_directories(Thread_SchedulerApp PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(Thread_SchedulerApp PRIVATE Thread_Scheduler)
+
 # Include headers for anyone linking Thread_Scheduler
 target_include_directories(Thread_Scheduler PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
